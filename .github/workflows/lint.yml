@@ -1,0 +1,36 @@
+name: Lint Code Base
+
+# push 가 되었을 때,
+# 밑의 환경속에서
+# Lint Code base 를 할 것이고
+# github super-linter 를 사용하여
+# flake8, black 이런 것들을 사용해준다.
+
+on: push
+
+jobs:
+  # Set the job key. The key is displayed as the job name
+  # when a job name is not provided
+  super-lint:
+    # Name the Job
+    name: Lint Code Base
+    # Set the type of machine to run on
+    runs-on: ubuntu-latest
+
+    env:
+      OS: ${{ matrix.os }}
+      PYTHON: '3.7'
+
+    steps:
+      # Checks out a copy of your repository on the ubuntu-latest machine
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Runs the Super-Linter action
+      - name: Lint Code Base
+        uses: github/super-linter@v3
+        env:
+          DEFAULT_BRANCH: master
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_PYTHON_BLACK: true
+          #VALIDATE_PYTHON_FLAKE8: true
